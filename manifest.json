@@ -6,7 +6,7 @@
     "revision": "0",
     "image": "flecs.azurecr.io/com.endress.sw-edge",
     "multiInstance": false,
-    "editors": [{ "name": "UI"," port": 8081, "supportsReverseProxy": true}],
+    "editors": [ { "name": "UI", "port": 8081, "supportsReverseProxy": true}],
     "env":[
         "SERIAL=1234",
         "API_KEY=1234"

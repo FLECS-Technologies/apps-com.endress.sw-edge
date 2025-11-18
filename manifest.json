@@ -11,5 +11,6 @@
         "SERIAL=1234",
         "API_KEY=1234"
     ],
-    "volumes": ["/sw_edge_storage:/mnt"]
+    "volumes": ["/sw_edge_storage:/mnt"],
+    "hostname": "eh-sw-edge"
 }

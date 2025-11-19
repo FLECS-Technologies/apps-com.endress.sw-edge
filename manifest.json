@@ -8,6 +8,7 @@
     "multiInstance": false,
     "editors": [ { "name": "UI", "port": 8081, "supportsReverseProxy": true}],
     "env":[
+        "mqttBrokerAddress=flecs-mqtt",
         "SERIAL=1234",
         "API_KEY=1234"
     ],

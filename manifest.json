@@ -1,17 +1,20 @@
 {
-    "$schema": "https://raw.githubusercontent.com/FLECS-Technologies/app-sdk/3.0.0/manifest.schema.json",
-    "_schemaVersion": "3.0.0",
+    "_schemaVersion": "2.0.0",
     "app": "com.endress.sw-edge",
     "version": "##VERSION##",
     "revision": "0",
     "image": "flecs.azurecr.io/com.endress.sw-edge",
     "multiInstance": false,
-    "editors": [ { "name": "UI", "port": 8081, "supportsReverseProxy": true}],
+    "editor": ":8081",
     "env":[
         "mqttBrokerAddress=flecs-mqtt",
         "SERIAL=1234",
         "API_KEY=1234"
     ],
     "volumes": ["/sw_edge_storage:/mnt"],
-    "hostname": "eh-sw-edge"
+    "hostname": "eh-sw-edge",
+    "ports": [
+        "8081:8081", 
+        "50051:50051"
+    ]
 }

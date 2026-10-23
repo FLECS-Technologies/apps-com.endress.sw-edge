@@ -1,0 +1,12 @@
+services:
+  app:
+    image: ghcr.io/pcps/eh-sw-edge:1.2.5
+    environment:
+      - mqttBrokerAddress=flecs-mqtt
+      - SERIAL=${SERIAL:-1234}
+      - API_KEY=${API_KEY:-1234}
+    ports:
+      - ${EDITOR_PORT:-8081}:8081
+      - ${SW_EDGE_PORT:-50051}:50051
+    volumes:
+      - "data:/mnt"

@@ -3,6 +3,8 @@ on:
   release:
     types:
       - released
+permissions:
+  contents: read
 jobs:
   app-release:
     uses: FLECS-Technologies/app-sdk/.github/workflows/app_release.yml@main
@@ -10,3 +12,9 @@ jobs:
     with:
       release-tag: ${{ github.event.release.tag_name }}
       app-version: ${{ github.event.release.tag_name }}
+  margo-push:
+    uses: ./.github/workflows/margo_push.yml
+    secrets: inherit
+    with:
+      hbv-version: ${{ github.event.release.tag_name }}
+      bart-version: "latest"

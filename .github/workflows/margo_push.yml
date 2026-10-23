@@ -1,0 +1,61 @@
+name: "Margo push"
+on:
+  workflow_call:
+    inputs:
+      sw-edge-version:
+        description: sw-edge image tag, also used as the Margo app version
+        required: true
+        type: string
+      bart-version:
+        description: Tag of the bart image to run
+        required: false
+        default: latest
+        type: string
+    secrets:
+      BART_REGISTRY_USER:
+        required: true
+      BART_REGISTRY_TOKEN:
+        required: true
+  workflow_dispatch:
+    inputs:
+      sw-edge-version:
+        description: sw-edge image tag, also used as the Margo app version
+        required: true
+        type: string
+      bart-version:
+        description: Tag of the bart image to run
+        required: false
+        default: latest
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  margo-push:
+    runs-on: ubuntu-latest
+    env:
+      BART_IMAGE: cr.flecs.tech/flecs/bart:${{ inputs.bart-version }}
+      SW_EGDE_VERSION: ${{ inputs.sw-edge-version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Pin HBV image to ${{ env.SW_EGDE_VERSION }}
+        run: |
+          set -eu
+          sed -Ei "s|^(\s*image:\s*ghcr.io/pcps/eh-sw-edge):.*$|\1:${SW_EGDE_VERSION}|" margo/compose/compose.yaml
+          grep -Eq "^\s*image:\s*ghcr.io/pcps/eh-sw-edge:${SW_EGDE_VERSION}$" margo/compose/compose.yaml
+
+      # This is currently only a dry run, to actually push: set repo secrets BART_REGISTRY_USER and BART_REGISTRY_TOKEN and replace `package` with `push`
+      - name: bart package
+        env:
+          BART_REGISTRY_USER: ${{ secrets.BART_REGISTRY_USER }}
+          BART_REGISTRY_TOKEN: ${{ secrets.BART_REGISTRY_TOKEN }}
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace \
+            -e BART_REGISTRY_USER \
+            -e BART_REGISTRY_TOKEN \
+            "${BART_IMAGE}" \
+            package --dir margo --version "${SW_EGDE_VERSION}"

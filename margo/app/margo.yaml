@@ -1,0 +1,57 @@
+apiVersion: margo/v1alpha1
+kind: ApplicationDescription
+id: com-endress-sw-edge
+metadata:
+  name: SW-Edge
+  version: "0.0.0" # overwritten by `bart`, this is just a placeholder
+  description: The Netilion Software Edge acts as the bridge connecting local field devices and industrial plant to Endress+Hauser’s Netilion cloud platform.
+  catalog:
+    organization:
+      - name: Endress+Hauser
+        site: https://www.endress.com
+    application:
+      tagline: Bridge local field devices and industrial plants to Netilion cloud platform.
+      icon: icon.png
+    author:
+      - name: Endress+Hauser
+        email: support@endress.com
+deploymentProfiles:
+  - type: compose
+    id: default
+    components:
+      - name: default
+        properties:
+          repository: oci://example.com/my-app # overwritten by `bart`, this is just a placeholder
+          revision: "0.0.0" # overwritten by `bart`, this is just a placeholder
+    requiredResources:
+      cpu:
+        cores: 1
+        architectures:
+          - amd64
+          - arm64
+          - arm
+parameters:
+  API_KEY:
+    value: "1234"
+    targets:
+      - pointer: API_KEY
+        components:
+          - default
+  EDITOR_PORT:
+    value: "8081"
+    targets:
+      - pointer: EDITOR_PORT
+        components:
+          - default
+  SERIAL:
+    value: "1234"
+    targets:
+      - pointer: SERIAL
+        components:
+          - default
+  SW_EDGE_PORT:
+    value: "50051"
+    targets:
+      - pointer: SW_EDGE_PORT
+        components:
+          - default

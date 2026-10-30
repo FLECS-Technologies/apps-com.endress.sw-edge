@@ -46,8 +46,7 @@ jobs:
           sed -Ei "s|^(\s*image:\s*ghcr.io/pcps/eh-sw-edge):.*$|\1:${SW_EGDE_VERSION}|" margo/compose/compose.yaml
           grep -Eq "^\s*image:\s*ghcr.io/pcps/eh-sw-edge:${SW_EGDE_VERSION}$" margo/compose/compose.yaml
 
-      # This is currently only a dry run, to actually push: set repo secrets BART_REGISTRY_USER and BART_REGISTRY_TOKEN and replace `package` with `push`
-      - name: bart package
+      - name: bart push
         env:
           BART_REGISTRY_USER: ${{ secrets.BART_REGISTRY_USER }}
           BART_REGISTRY_TOKEN: ${{ secrets.BART_REGISTRY_TOKEN }}
@@ -58,4 +57,4 @@ jobs:
             -e BART_REGISTRY_USER \
             -e BART_REGISTRY_TOKEN \
             "${BART_IMAGE}" \
-            package --dir margo --version "${SW_EGDE_VERSION}"
+            push --dir margo --version "${SW_EGDE_VERSION}"

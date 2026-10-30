@@ -16,6 +16,8 @@ on:
         required: true
       BART_REGISTRY_TOKEN:
         required: true
+      PRIVATE_REGISTRY_PASSWORD:
+        required: true
   workflow_dispatch:
     inputs:
       sw-edge-version:
@@ -50,11 +52,16 @@ jobs:
         env:
           BART_REGISTRY_USER: ${{ secrets.BART_REGISTRY_USER }}
           BART_REGISTRY_TOKEN: ${{ secrets.BART_REGISTRY_TOKEN }}
+          PRIVATE_REGISTRY: ${{ vars.PRIVATE_REGISTRY }}
+          PRIVATE_REGISTRY_USER: ${{ vars.PRIVATE_REGISTRY_USER }}
+          PRIVATE_REGISTRY_PASSWORD: ${{ secrets.PRIVATE_REGISTRY_PASSWORD }}
         run: |
+          export BART_PULL_AUTH="${PRIVATE_REGISTRY}=${PRIVATE_REGISTRY_USER}:${PRIVATE_REGISTRY_PASSWORD}"
           docker run --rm \
             -v "${GITHUB_WORKSPACE}:/workspace" \
             -w /workspace \
             -e BART_REGISTRY_USER \
             -e BART_REGISTRY_TOKEN \
+            -e BART_PULL_AUTH \
             "${BART_IMAGE}" \
             push --dir margo --version "${SW_EGDE_VERSION}"

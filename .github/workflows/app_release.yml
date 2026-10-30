@@ -16,5 +16,5 @@ jobs:
     uses: ./.github/workflows/margo_push.yml
     secrets: inherit
     with:
-      hbv-version: ${{ github.event.release.tag_name }}
+      sw-edge-version: ${{ github.event.release.tag_name }}
       bart-version: "latest"
